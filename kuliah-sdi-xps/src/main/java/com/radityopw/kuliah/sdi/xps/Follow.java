@@ -40,10 +40,33 @@ public class Follow{
 		stmt.setString(2,formattedDate);
 		stmt.setString(3,emailToFollow);
 		stmt.executeUpdate();
-		
+
+		Connection cDb1 = DriverManager.getConnection("jdbc:sqlite:db1.sqlite3");
+		sql = "SELECT email FROM user WHERE email=?";
+                stmt = cDb1.prepareStatement(sql);
+                stmt.setString(1,email);
+                ResultSet rs = stmt.executeQuery();
+                if(rs.next()){
+                        // skip karena sudah ada usernya
+                        stmt.close();
+                        stmt = null;
+                } else {
+                        stmt.close();
+                        stmt = null;
+
+                        sql = "INSERT INTO user(email) VALUES (?)";
+                        stmt = cDb1.prepareStatement(sql);
+                        stmt.setString(1,email);
+                        stmt.execute();
+                        stmt.close();
+                        stmt = null;
+                }
+		rs.close();
+		rs = null;
+
 		// close connection
-		stmt.close();
 		c.close();
+		cDb1.close();
 
 	}
 

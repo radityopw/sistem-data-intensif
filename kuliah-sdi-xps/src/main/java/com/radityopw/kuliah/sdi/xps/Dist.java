@@ -38,7 +38,9 @@ public class Dist{
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()) {
 			//ambil yang difollow
+			//System.out.println(rs.getString(1));
 			String dbName = rs.getString(1)+".sqlite3";
+			ensureDbReady(dbName);
 			Connection conUser = DriverManager.getConnection("jdbc:sqlite:"+dbName);
 			sql = "SELECT email_to_follow FROM follows";
 			PreparedStatement psUser = conUser.prepareStatement(sql);
@@ -46,22 +48,23 @@ public class Dist{
 			while(rsUser.next()){
 				sql = "SELECT email,post,post_created FROM posts WHERE email=? ORDER BY post_created DESC LIMIT 1";
 				PreparedStatement psPostFollow = conDb1.prepareStatement(sql);
-				psPostFollow.setString(1,rs.getString(1));
+				psPostFollow.setString(1,rsUser.getString(1));
 				ResultSet rsPostFollow = psPostFollow.executeQuery();
 				if ( rsPostFollow.next() ) {
+					//System.out.println("memproses "+rsPostFollow.getString(1));
 					//hapus dulu di timeline user untuk email follow
 					PreparedStatement psUserHapusTl = conUser.prepareStatement("DELETE FROM timeline WHERE email=?");
-					psUserHapusTl.setString(1,rs.getString(1));
-					psUserHapusTl.execute();
+					psUserHapusTl.setString(1,rsPostFollow.getString(1));
+					psUserHapusTl.executeUpdate();
 					psUserHapusTl.close();
 					psUserHapusTl = null;
 
 					//tambahkan timeline
 					PreparedStatement psUserAddTl = conUser.prepareStatement("INSERT INTO timeline(email,post,post_created) VALUES(?,?,?)");
-					psUserAddTl.setString(1,rs.getString(1));
+					psUserAddTl.setString(1,rsPostFollow.getString(1));
 					psUserAddTl.setString(2,rsPostFollow.getString(2));
 					psUserAddTl.setString(3,rsPostFollow.getString(3));
-					psUserAddTl.execute();
+					psUserAddTl.executeUpdate();
 					psUserAddTl.close();
 					psUserAddTl = null;
 				}

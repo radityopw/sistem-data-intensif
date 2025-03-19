@@ -2,6 +2,7 @@ mvn exec:java -Dexec.mainClass=nama.class.dengan.package -Dexec.args="args1 args
 
 class -> argument parameter : 
 
-com.radityopw.kuliah.sdi.x.Post  -> email , message
-com.radityopw.kuliah.sdi.x.Follow -> email, email to follow
-com.radityopw.kuliah.sdi.x.Timeline -> email
+com.radityopw.kuliah.sdi.xps.Post  -> email , message
+com.radityopw.kuliah.sdi.xps.Follow -> email, email to follow
+com.radityopw.kuliah.sdi.xps.Timeline -> email
+com.radityopw.kuliah.sdi.xps.Dist 
