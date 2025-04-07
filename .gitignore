@@ -47,3 +47,7 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+
+#ignore radit.db file
+**/*.radit.db
