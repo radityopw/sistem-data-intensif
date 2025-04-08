@@ -51,3 +51,6 @@ buildNumber.properties
 
 #ignore radit.db file
 **/*.radit.db
+
+#ignore .swp
+**/*.swp
