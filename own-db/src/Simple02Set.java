@@ -2,14 +2,7 @@ import java.io.*;
 
 public class Simple02Set{
 
-	public static void main(String[] a) throws Exception{
-		String namaFileDb = a[0];
-		String id = a[1]; // id maksimal 5 karakter
-		String nama = a[2]; // nama maksimal 20 karakter
-		final String encoding = "ISO-8859-1";
-
-		if ( id.length() > 5 ) throw new Exception(" id tidak boleh lebih dari 5 karakter");
-		if ( nama.length() > 20 ) throw new Exception(" nama tidak boleh lebih dari 20 karakter");
+	public void write(String namaFileDb, String id, String nama) throws Exception{
 
 		// melakukan penyamaan length setiap kolom
 		for (int i=id.length(); i< 5; i++) {
@@ -26,16 +19,30 @@ public class Simple02Set{
 		RandomAccessFile db = new RandomAccessFile(fileDb,"rw");
 
 		db.seek(db.length());
-		byte[] data = id.getBytes(encoding);
-		for(int i=0;i<data.length;i++){
-			db.write(data[i]);
-		}
-		data = nama.getBytes(encoding);
-		for(int i=0;i<data.length;i++){
-			db.write(data[i]);
-		}
+		db.writeBytes(id);
+		db.writeBytes(nama);
 
 		db.close();
+
+	}
+
+	public static void main(String[] a) throws Exception{
+		String id = a[0]; // id maksimal 5 karakter
+		String nama = a[1]; // nama maksimal 20 karakter
+
+		Simple02Config config = new Simple02Config();
+
+		final String namaFileDb = config.namaFileDb();
+
+		final int jmlKarakterId = config.jmlKarakterId();
+		final int jmlKarakterNama = config.jmlKarakterNama();
+
+		if ( id.length() > jmlKarakterId ) throw new Exception(" id tidak boleh lebih dari "+jmlKarakterId+" karakter");
+		if ( nama.length() > jmlKarakterNama ) throw new Exception(" nama tidak boleh lebih dari "+jmlKarakterNama+" karakter");
+
+		Simple02Set set = new Simple02Set();
+		set.write(namaFileDb,id,nama);
+
 	}
 
 }

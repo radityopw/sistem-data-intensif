@@ -1,3 +1,4 @@
+rm *.class
 cd src
 javac *.java
 cd ..

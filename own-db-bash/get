@@ -1,0 +1,3 @@
+#! /bin/bash
+
+cat database/$1 | tail -n 1

@@ -1,11 +1,12 @@
 import java.io.*;
 
-public class Simple02Get{
+public class Simple02GetHashIndex{
 
 	public static void main(String[] a) throws Exception {
 		Simple02Config config = new Simple02Config();
 
-		String namaFileDb = config.namaFileDb();
+		final String namaFileDb = config.namaFileDb();
+		final String namaIndexDir = config.namaIndexDir();
 		String id = a[0];
 		final int jmlKarakterPerBaris = config.jmlKarakterPerBaris();
 		final int jmlKarakterId = config.jmlKarakterId();
@@ -16,29 +17,12 @@ public class Simple02Get{
 			id = id + " ";
 		}
 
+		RandomAccessFile index = new RandomAccessFile(namaIndexDir+"/"+id,"r");
+		index.seek(0);
+		long offset = Long.parseLong(index.readLine());
+		index.close();
+
 		RandomAccessFile db = new RandomAccessFile(namaFileDb,"r");
-
-		db.seek(0);
-
-		long offset = -1;
-
-		int iterator = 0;
-		String idDb = "";
-		byte[] idDbBytes = new byte[jmlKarakterId];
-
-		while( db.getFilePointer() < db.length() ) {
-			db.read(idDbBytes,0,jmlKarakterId);
-			idDb = idDb + new String(idDbBytes);
-			iterator = iterator + jmlKarakterId;
-
-			if ( iterator == jmlKarakterId ) {
-				if ( idDb.equals(id) ) offset = db.getFilePointer() - (jmlKarakterId * 1);
-				iterator = 0;
-				idDb = "";
-				idDbBytes = new byte[jmlKarakterId];
-			}
-		}
-
 
 		byte[] dataRow = new byte[jmlKarakterPerBaris];
 		if ( offset > -1 ) {
