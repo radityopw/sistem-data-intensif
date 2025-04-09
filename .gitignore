@@ -53,5 +53,7 @@ buildNumber.properties
 **/*.radit.db
 **/*.radit.db.index
 
+**/database
+
 #ignore .swp
 **/*.swp
