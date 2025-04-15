@@ -1,0 +1,5 @@
+# /bin/bash 
+
+# install php-json msgpack
+sudo apt install php-cli php-json php-pear php-dev
+sudo pecl install msgpack
