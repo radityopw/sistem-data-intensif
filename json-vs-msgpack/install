@@ -1,0 +1,6 @@
+sudo apt update
+sudo apt install jq golang
+
+go get github.com/jakm/msgpack-cli
+
+ln -s ~/go/bin/msgpack-cli .
